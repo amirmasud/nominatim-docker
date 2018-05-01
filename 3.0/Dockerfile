@@ -27,7 +27,7 @@ RUN echo "host all  all    0.0.0.0/0  trust" >> /etc/postgresql/9.5/main/pg_hba.
     echo "listen_addresses='*'" >> /etc/postgresql/9.5/main/postgresql.conf
 
 # Nominatim install
-ENV NOMINATIM_VERSION v3.0.1
+ENV NOMINATIM_VERSION v3.1.0
 RUN git clone --recursive https://github.com/openstreetmap/Nominatim ./src
 RUN cd ./src && git checkout tags/$NOMINATIM_VERSION && git submodule update --recursive --init && \
     mkdir build && cd build && cmake .. && make
@@ -40,7 +40,7 @@ COPY local.php /app/src/build/settings/local.php
 COPY nominatim.conf /etc/apache2/sites-enabled/000-default.conf
 
 # Load initial data
-ARG PBF_DATA=http://download.geofabrik.de/europe/monaco-latest.osm.pbf
+ARG PBF_DATA=http://download.geofabrik.de/asia/iran-latest.osm.pbf
 RUN curl -L -f $PBF_DATA --create-dirs -o /app/src/data.osm.pbf
 RUN curl http://www.nominatim.org/data/country_grid.sql.gz > /app/src/data/country_osm_grid.sql.gz
 RUN service postgresql start && \
