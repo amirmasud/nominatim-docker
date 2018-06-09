@@ -3,6 +3,8 @@ MAINTAINER dorukozturk <dorukozturk@kitware.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
+ARG OSM2PGSQL_CACHE=40000
+ARG NUMOFTHREADS=16
 
 RUN apt-get -y update -qq && \
     apt-get -y install locales && \
@@ -49,7 +51,7 @@ RUN service postgresql start && \
     sudo -u postgres psql postgres -c "DROP DATABASE IF EXISTS nominatim" && \
     useradd -m -p password1234 nominatim && \
     chown -R nominatim:nominatim ./src && \
-    sudo -u nominatim ./src/build/utils/setup.php --osm-file /app/src/data.osm.pbf --all --threads 2 && \
+    sudo -u nominatim ./src/build/utils/setup.php --osm-file /app/src/data.osm.pbf --all --osm2pgsql-cache ${OSM2PGSQL_CACHE} --threads ${NUMOFTHREADS} && \
     service postgresql stop
 
 EXPOSE 5432
