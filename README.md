@@ -25,23 +25,33 @@ If a different country should be used you can set `PBF_DATA` on build.
   # cd nominatim-docker/3.0
   ```
 
-2. Modify Dockerfile, set your url for PBF
-
-  ```
-  ENV PBF_DATA http://download.geofabrik.de/asia/iran-latest.osm.pbf
-  ```
-3. Configure incrimental update. By default CONST_Replication_Url configured for Monaco.
+ ```
+2. Configure incrimental update. By default CONST_Replication_Url configured for Iran.
 If you want a different update source, you will need to declare `CONST_Replication_Url` in local.php. Documentation [here] (https://github.com/openstreetmap/Nominatim/blob/master/docs/Import-and-Update.md#updates). For example, to use the daily country extracts diffs for Gemany from geofabrik add the following:
   ```
   @define('CONST_Replication_Url', 'http://download.geofabrik.de/asia/iran-updates');
   ```
 
-4. Build 
+3. Build
+
+- if you want to use latest Iran OSM extract from geofabrik as data source:
+
+    ```bash
+    docker build . -t nominatim-iran --no-cache
+    ```
+- if you want to provide another address (file **relative address** or **url** ) for `.osm.pbf` file you should pass it with `PBF_DATA` build argument.
+
+    ```bash
+    ## FOR RELATIVE ADDRESS:
+    docker build . --build-arg PBF_DATA="relative/path/to/iran-data.osm.pbf" -t nominatim-iran --no-cache
+  ## FOR URL:
+  docker build . --build-arg PBF_DATA="http://domain/path/to/iran-data.osm.pbf" -t nominatim-iran --no-cache
+    ```
 
   ```
   docker build -t nominatim .
   ```
-5. Run
+4. Run
 
   ```
   docker run --restart=always -d -p 8080:8080 --name nominatim-iran nominatim
