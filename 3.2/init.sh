@@ -1,6 +1,8 @@
+#!/usr/bin/env bash
 OSMFILE=$1
 PGDIR=$2
-THREADS=$3
+THREADS=${3:-1}
+OSM2PGSQL_CACHE=${4:-2048}
 
 mkdir -p /data/$PGDIR && \
 
@@ -14,6 +16,6 @@ sudo -u postgres psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='www-d
 sudo -u postgres psql postgres -c "DROP DATABASE IF EXISTS nominatim" && \
 useradd -m -p password1234 nominatim && \
 chown -R nominatim:nominatim ./src && \
-sudo -u nominatim ./src/build/utils/setup.php --osm-file $OSMFILE --all --threads $THREADS && \
+sudo -u nominatim ./src/build/utils/setup.php --osm-file $OSMFILE --all --threads $THREADS --osm2pgsql-cache $OSM2PGSQL_CACHE && \
 sudo -u postgres /usr/lib/postgresql/10/bin/pg_ctl -D /data/$PGDIR stop && \
 sudo chown -R postgres:postgres /data/$PGDIR
