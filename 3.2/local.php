@@ -2,7 +2,7 @@
  // Paths
  @define('CONST_Postgresql_Version', '10');
  @define('CONST_Postgis_Version', '2.4');
- @define('CONST_Osm2pgsql_Flatnode_File', '/data/flatnode.file');
+ //@define('CONST_Osm2pgsql_Flatnode_File', '/data/flatnode.file');
  // Website settings
  @define('CONST_Website_BaseURL', '/');
  @define('CONST_Replication_Url', 'http://download.geofabrik.de/asia/iran-updates');
